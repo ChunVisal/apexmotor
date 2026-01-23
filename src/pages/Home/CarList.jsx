@@ -1,9 +1,11 @@
+// src/pages/Home/CarList.jsx
 import { useEffect, useMemo, useState, useRef } from "react";
 import { collectionGroup, getDocs, query } from "firebase/firestore";
 import { db } from "../../firebase/firebase.js";
 import CarCard from "../../components/cars/CarCard.jsx";
 import Cambodia from "../../assets/logo/Cambodia.png";
-import { useLocation, useNavigationType, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 // Simple deterministic shuffle function
 const seededShuffle = (array, seed) => {
@@ -24,7 +26,8 @@ const seededShuffle = (array, seed) => {
 const CARS_CACHE_KEY = "cars-data-cache";
 const DISPLAY_CACHE_KEY = "cars-display-cache";
 
-export default function CarList({ filters = {}, sortOption, isHomePage = false }) {
+export default function CarList({ sortOption, isHomePage = false }) {
+
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(35); // Initial number of cars to show for inventory page
@@ -32,7 +35,6 @@ export default function CarList({ filters = {}, sortOption, isHomePage = false }
   const listRef = useRef(null);
 
   const location = useLocation();
-  const navType = useNavigationType();
 
   // --- Data fetching + caching + shuffle ---
   useEffect(() => {
@@ -199,45 +201,74 @@ export default function CarList({ filters = {}, sortOption, isHomePage = false }
   // Check if there are more cars to load
   const hasMore = carsToDisplay.length < filteredAndSortedCars.length;
 
+  
+  const jsonLdCars = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": carsToDisplay.map((car, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `https://yourwebsite.com/cars/${car.userId}/${car.id}`,
+      name: `${car.name} ${car.model}`,
+      image: car.images || ["/placeholder.png"],
+      description: car.features?.slice(0,3).join(", ") || "High quality car for sale",
+      brand: { "@type": "Brand", name: car.name },
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "USD",
+        price: car.price || 0,
+        availability: "https://schema.org/InStock"
+      }
+    }))
+  };
+
   return (
-    <section className="m-1 mx-2 rounded-[2px] bg-card p-3 px-2 md:m-4 md:p-3 sm:px-10 lg:m-6 lg:mx-10 lg:p-4">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-5 flex items-center gap-2">
-          <h2 className="text-lg font-bold text-gray-800">Cars for Sale</h2>
-          <img src={Cambodia} alt="Cambodia Flag" className="w-10" />
-        </div>
-        <div ref={listRef} className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr">
-          {carsToDisplay.length > 0 ? (
-            carsToDisplay.map(car => (
-              <div key={car.id} className="h-full min-h-0">
-                <CarCard car={car} />
+    <><Helmet>
+      <title>Cars for Sale in Cambodia | ApexMotor</title>
+      <meta name="description" content="Browse hundreds of cars for sale in Cambodia. Find your perfect car with details, price, and features." />
+      <script type="application/ld+json">
+        {JSON.stringify(jsonLdCars)}
+      </script>
+    </Helmet>
+
+    <section className="m-1 mx-2 rounded-[2px] bg-card p-3 px-2 md:m-4 md:p-3 sm:px-10">
+        <div className="mx-auto max-w-1xl">
+          <div className="mb-5 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-gray-800">Cars for Sale</h2>
+            <img src={Cambodia} alt="Cambodia Flag" className="w-10" />
+          </div>
+          <div ref={listRef} className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr">
+            {carsToDisplay.length > 0 ? (
+              carsToDisplay.map(car => (
+                <div key={car.id} className="h-full min-h-0">
+                  <CarCard car={car} />
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full py-10 text-center text-gray-500">
+                <p className="text-lg">No cars found matching your criteria.</p>
+                <p className="mt-2 text-sm">Try adjusting your filters or search query.</p>
               </div>
-            ))
-          ) : (
-            <div className="col-span-full py-10 text-center text-gray-500">
-              <p className="text-lg">No cars found matching your criteria.</p>
-              <p className="mt-2 text-sm">Try adjusting your filters or search query.</p>
+            )}
+          </div>
+
+          {/* --- View More button for Home page --- */}
+          {isHomePage && hasMore && (
+            <div className="flex justify-center mt-4">
+              <Link to="/cars" className="px-5 py-1 text-sm underline font-medium text-[#2384C1] hover:text-blue-500 transition-colors duration-200">
+                View More
+              </Link>
             </div>
           )}
+
+          {/* --- Loading indicator for infinite scroll --- */}
+          {!isHomePage && isLoadingMore && hasMore && (
+            <div className="flex justify-center items-center h-20">
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-900"></div>
+            </div>
+          )}
+
         </div>
-
-        {/* --- View More button for Home page --- */}
-        {isHomePage && hasMore && (
-          <div className="flex justify-center mt-4">
-            <Link to="/cars" className="px-5 py-1 text-sm underline font-medium text-[#2384C1] hover:text-blue-500 transition-colors duration-200">
-              View More
-            </Link>
-          </div>
-        )}
-
-        {/* --- Loading indicator for infinite scroll --- */}
-        {!isHomePage && isLoadingMore && hasMore && (
-          <div className="flex justify-center items-center h-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-900"></div>
-          </div>
-        )}
-
-      </div>
-    </section>
+      </section></>
   );
 }

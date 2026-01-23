@@ -1,3 +1,4 @@
+// src/components/common/CardMenu.jsx
 import { useState, useEffect } from "react";
 import { User, Bookmark, BookmarkCheck, Flag, XCircle } from "lucide-react";
 import { FaEllipsisV } from "react-icons/fa";
@@ -10,9 +11,10 @@ import { ShareCarButton } from "../common/ShareProfile";
 export default function CardMenu({ car }) {
   const [showMenu, setShowMenu] = useState(false);
   const { addToCart, removeFromCart, isInCart } = useCart(); // ✅ include isInCart
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   const closeMenu = () => setShowMenu(false);
+  const carId = car.id || car._id;
 
   useEffect(() => {
     document.body.style.overflow = showMenu ? "hidden" : "";
@@ -62,10 +64,9 @@ export default function CardMenu({ car }) {
         <>
           <div className="fixed inset-0 z-40 bg-black/50" onClick={closeMenu} />
           <div className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-xs -translate-x-1/2 -translate-y-1/2 rounded-lg border bg-white shadow-xl">
-            <ul className="py-1.5 text-sm text-gray-800 font-semibold">
+            <ul className="py-1.5 text-sm text-gray-800">
               <li>
-                <Link
-                  to="/Profile"
+                <Link to={`/public-profile/${car.userId}`}
                   className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50"
                 >
                   <User size={20} className="text-gray-600" />
@@ -85,7 +86,7 @@ export default function CardMenu({ car }) {
                   <span>{isInCart(car?.id) ? "Remove from Cart" : "Save to Cart"}</span>
                 </button>
               </li>
-              <ShareCarButton />
+              <ShareCarButton userId={car.userId} carId={car.id || car._id} />
               <li>
                 <button
                   onClick={closeMenu}

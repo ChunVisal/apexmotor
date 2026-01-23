@@ -11,6 +11,7 @@ i18n
     resources: {
       en: { translation: en },
       km: { translation: km },
+      
     },
     lng: "en",           // default language
     fallbackLng: "en",

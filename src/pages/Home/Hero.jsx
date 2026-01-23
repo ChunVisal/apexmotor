@@ -43,8 +43,8 @@ export default function Hero() {
           Drive Your <span className="text-green-500 font-bold space-x-0">Dream</span> without The Dealership Hassle
         </h1>
 
-        <p className="text-xs md:text-0xl text-gray-300 mb-2 md:mb-3 max-w-md">
-          We've revolutionized car buying with upfront pricing, 360° virtual tours, and home test drives. No pressure. No hidden fees. Just exceptional vehicles.
+        <p className="text-xs md:text-sm text-gray-300 mb-2 md:mb-3 max-w-md">
+          Buy cars online with upfront pricing, virtual tours, and home test drives. No pressure, no hidden fees.
         </p>
 
         <div className="flex flex-row sm:flex-col lg:flex-col gap-5 sm:gap-0.5 lg:gap-0.5 w-full items-center justify-center sm:items-center md:items-start lg:items-start">

@@ -100,7 +100,7 @@ export default function Wishlist() {
             <button className="flex items-center gap-1 text-gray-800 bg-white border border-gray-300 rounded px-2 py-1.5 text-xs hover:bg-gray-50">
               <FiFilter className="text-gray-800 text-xs" />
               Filters
-            </button>
+          </button>
             <button className="flex items-center gap-1 text-gray-800 bg-white border border-gray-300 rounded px-2 py-1 text-xs hover:bg-gray-50">
               <Grid size={16} className="text-gray-800" />
             </button>

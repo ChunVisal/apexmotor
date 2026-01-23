@@ -65,8 +65,17 @@ export const carModels = {
   ],
   "Aston Martin": ["DB11", "Vantage", "DBX", "Valkyrie", "DBS", "Valhalla"],
   "Audi": [
-    "A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q4", "Q5", "Q7", "Q8",
-    "e-tron", "R8", "TT", "Q6 e-tron", "A6 e-tron", "A6 Sportback e-tron",
+    "A1", "A3", "A4", "A5", "A6", "A7", "A8",
+    "S3", "S4", "S5", "S6", "S7", "S8",
+    "RS3", "RS4", "RS5", "RS6", "RS7",
+    "Q2", "Q3", "Q4", "Q5", "Q7", "Q8",
+    "SQ5", "SQ7", "SQ8",
+    "RS Q3", "RS Q8",
+    "Q4 e-tron", "Q6 e-tron", "Q8 e-tron",
+    "e-tron GT", "RS e-tron GT",
+    "A6 e-tron", "A6 Sportback e-tron",
+    "TT", "TTS", "TT RS",
+    "R8", "R8 V10"
   ],
   "BMW": [
     "1 Series", "2 Series", "3 Series", "4 Series", "5 Series", "6 Series", "7 Series", "8 Series",
@@ -110,7 +119,7 @@ export const carModels = {
   ],
   "MINI": ["Cooper", "Countryman", "Clubman", "Hardtop"],
   "Mitsubishi": ["Outlander", "Outlander Sport", "Mirage", "Eclipse Cross"],
-  "Nissan": ["Altima", "Titan", "Rogue", "Sentra", "Pathfinder", "Murano", "Frontier", "Z"],
+  "Nissan": ["Altima", "Titan", "Rogue", "Sentra", "Pathfinder", "Murano", "Frontier", "Z", "GTR"],
   "Pagani": ["Huayra", "Zonda"],
   "Peugeot": ["208", "308", "2008", "3008", "5008"],
   "Porsche": ["911", "Cayenne", "Macan", "Panamera", "Taycan", "718 Boxster", "718 Cayman", "Macan EV"],

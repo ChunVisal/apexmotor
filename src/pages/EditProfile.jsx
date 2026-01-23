@@ -1,7 +1,12 @@
 // src/pages/EditProfile.jsx
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { updateProfile, updatePassword, EmailAuthProvider, reauthenticateWithCredential  } from "firebase/auth";
+import {
+  updateProfile,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+} from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { db, auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
@@ -22,34 +27,39 @@ const EditProfile = () => {
   const [email] = useState(user?.email || "");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
-  const [newProvider, setNewProvider] = useState("other"); 
-  const [contactNumbers, setContactNumbers] = useState(profile?.contactNumbers || []);
+  const [newProvider, setNewProvider] = useState("other");
+  const [contactNumbers, setContactNumbers] = useState(
+    profile?.contactNumbers || []
+  );
   const [address, setAddress] = useState(profile?.address || "");
   const [description, setDescription] = useState(profile?.description || "");
   const [profileImage, setProfileImage] = useState(profile?.profileImage || "");
   const [job, setJob] = useState(profile?.job || "");
-  const [backgroundImage, setBackgroundImage] = useState(profile?.backgroundImage || "");
+  const [backgroundImage, setBackgroundImage] = useState(
+    profile?.backgroundImage || ""
+  );
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   // Cloudinary config
-  const cloudName = "dwwsvsah5"; 
-  const uploadPreset = "apexmotor-upload"; 
+  const cloudName = "dwwsvsah5";
+  const uploadPreset = "apexmotor-upload";
 
-   const getProviderImage = (provider) => {
-      switch (provider) {
-        case "smart":
-          return Smart;
-        case "cellcard":
-          return Cellcard;
-        case "metfone":
-          return Metfone;
-        default:
-          return null;
-      }
-    };
+  const getProviderImage = (provider) => {
+    switch (provider) {
+      case "smart":
+        return Smart;
+      case "cellcard":
+        return Cellcard;
+      case "metfone":
+        return Metfone;
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     if (profile) {
@@ -97,7 +107,6 @@ const EditProfile = () => {
     }
   };
 
-
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -108,7 +117,7 @@ const EditProfile = () => {
       // password update
       if (newPassword && newPassword === confirmPassword) {
         try {
-          await reauthenticate(currentPassword); 
+          await reauthenticate(currentPassword);
           await updatePassword(auth.currentUser, newPassword);
         } catch (err) {
           alert("Failed to update password. Please log in again.");
@@ -117,16 +126,20 @@ const EditProfile = () => {
 
       // save Firestore data (with background!)
       const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, {
-        username,
-        contactNumbers,
-        address,
-        message,
-        description,
-        job,
-        profileImage,
-        backgroundImage,
-      }, { merge: true });
+      await setDoc(
+        userRef,
+        {
+          username,
+          contactNumbers,
+          address,
+          message,
+          description,
+          job,
+          profileImage,
+          backgroundImage,
+        },
+        { merge: true }
+      );
 
       alert("Profile updated successfully!");
       navigate("/profile");
@@ -139,7 +152,10 @@ const EditProfile = () => {
   const handleAddContact = () => {
     if (newPhoneNumber.trim() !== "") {
       // Updated: push an object with number and provider
-      setContactNumbers((prev) => [...prev, { number: newPhoneNumber.trim(), provider: newProvider }]);
+      setContactNumbers((prev) => [
+        ...prev,
+        { number: newPhoneNumber.trim(), provider: newProvider },
+      ]);
       setNewPhoneNumber("");
       setNewProvider("other");
     }
@@ -168,6 +184,7 @@ const EditProfile = () => {
           {/* Profile Image */}
           <div className="flex flex-col items-center mb-6">
             <img
+              onClick={() => setPreviewOpen(true)}
               src={profileImage || "https://via.placeholder.com/150"}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
@@ -179,6 +196,30 @@ const EditProfile = () => {
               className="mt-3 text-sm"
             />
           </div>
+
+          {previewOpen && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+              onClick={() => setPreviewOpen(false)}
+            >
+              <div className="relative" onClick={(e) => e.stopPropagation()}>
+                <img
+                  src={
+                    profile?.profileImage || "https://via.placeholder.com/300"
+                  }
+                  alt="Profile Preview"
+                  className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-lg"
+                />
+
+                <button
+                  onClick={() => setPreviewOpen(false)}
+                  className="absolute top-2 right-2 bg-black/60 text-white rounded-full px-3 py-1 text-sm hover:bg-black"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Account Info */}
           <div>
@@ -208,39 +249,43 @@ const EditProfile = () => {
                 </p>
               </div>
               <div className="flex flex-col">
-              <label className="text-sm font-medium mb-1">Current Password</label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="********"  
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg py-1 px-3 text-sm"
-              />
-            </div>
+                <label className="text-sm font-medium mb-1">
+                  Current Password
+                </label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="********"
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg py-1 px-3 text-sm"
+                />
+              </div>
 
-            {/* New Password */}
-            <div className="flex flex-col">
-              <label className="text-sm font-medium mb-1">New Password</label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="********"
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg py-1 px-3 text-sm"
-              />
-            </div>
+              {/* New Password */}
+              <div className="flex flex-col">
+                <label className="text-sm font-medium mb-1">New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="********"
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg py-1 px-3 text-sm"
+                />
+              </div>
 
-            {/* Confirm Password */}
-            <div className="flex flex-col">
-              <label className="text-sm font-medium mb-1">Confirm Password</label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="********"
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg py-1 px-3 text-sm"
-              />
-            </div>
+              {/* Confirm Password */}
+              <div className="flex flex-col">
+                <label className="text-sm font-medium mb-1">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="********"
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg py-1 px-3 text-sm"
+                />
+              </div>
             </div>
           </div>
 
@@ -289,18 +334,29 @@ const EditProfile = () => {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium mb-1">Background Image</label>
+                <label className="text-sm font-medium mb-1">
+                  Background Image
+                </label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => handleImageUpload(e, "background")}
                 />
-                {backgroundImage && <img src={backgroundImage} width={600} 
-                      height={400} 
-                      loading="lazy" alt="Background" className="mt-2 w-full h-full object-cover rounded-lg" />}
+                {backgroundImage && (
+                  <img
+                    src={backgroundImage}
+                    width={600}
+                    height={400}
+                    loading="lazy"
+                    alt="Background"
+                    className="mt-2 w-full h-full object-cover rounded-lg"
+                  />
+                )}
               </div>
               <div className="flex flex-col">
-                <label className="text-sm font-medium mb-1">Phone Numbers</label>
+                <label className="text-sm font-medium mb-1">
+                  Phone Numbers
+                </label>
                 <div className="flex space-x-2">
                   <div className="flex items-center space-x-2">
                     <select
@@ -344,7 +400,9 @@ const EditProfile = () => {
                             className="h-4"
                           />
                         ) : (
-                          <span className="text-xs text-gray-600 capitalize">{phone.provider}</span>
+                          <span className="text-xs text-gray-600 capitalize">
+                            {phone.provider}
+                          </span>
                         )}
                         <span>{phone.number}</span>
                       </div>

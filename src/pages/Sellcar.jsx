@@ -61,7 +61,6 @@ const SellYourCar = () => {
   const [progress, setProgress] = useState(0);
 
 
-
   const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm();
   
   const [formData, setFormData] = useState({
@@ -237,11 +236,6 @@ const SellYourCar = () => {
   };
 
   
-  const handleAfterSubmit = async () => {
-    // after updating or creating a car
-    await fetchSoldCars(); // function that fetches sold cars
-  };
-
   const removeImage = (indexToRemove) => {
     const isNewImage = indexToRemove >= images.length - filesToUpload.length;
     if (isNewImage) {
@@ -268,10 +262,6 @@ const SellYourCar = () => {
       }
     }, 200);
     
-    if (!user) {
-      alert("You must be logged in to list a car.");
-      return;
-    }
 
     if (images.length === 0) {
       alert("Please upload at least one photo.");
@@ -281,7 +271,7 @@ const SellYourCar = () => {
     const cloudName = "dwwsvsah5";
     const uploadPreset = "apexmotor-upload";
     
-    // START: Photo upload logic
+    // START: Photo upload logicz
     const uploadedImageUrls = [];
     try {
       for (const file of filesToUpload) {
@@ -545,7 +535,7 @@ const SellYourCar = () => {
                   <input
                     type="text"
                     name="year"
-                    {...register("year", { required: false, pattern: /^\d{4}$/ })}
+                    {...register("year", { required: true, pattern: /^\d{4}$/ })}
                     value={formData.year}
                     onChange={handleChange}
                     placeholder="e.g., 2024"
@@ -572,7 +562,7 @@ const SellYourCar = () => {
                   <input
                     type="text"
                     name="price"
-                    {...register("price", { required: false, pattern: /^\d+(\.\d{1,2})?$/ })}
+                    {...register("price", { required: true, pattern: /^\d+(\.\d{1,2})?$/ })}
                     value={formData.price}
                     onChange={handleChange}
                     placeholder="e.g., 120,900"
@@ -596,7 +586,7 @@ const SellYourCar = () => {
                   <input
                     type="text"
                     name="mileage"
-                    {...register("mileage", { required: false, pattern: /^\d+$/ })}
+                    {...register("mileage", { required: true, pattern: /^\d+$/ })}
                     value={formData.mileage}
                     onChange={handleChange}
                     placeholder="e.g., 12,000"
@@ -686,7 +676,7 @@ const SellYourCar = () => {
                   <label className="text-sm font-medium mb-1">Description</label>
                   <textarea
                     name="description"
-                    {...register("description", { required: false, minLength: 30 })}
+                    {...register("description", { required: true, minLength: 30 })}
                     value={formData.description}
                     onChange={handleChange}
                     placeholder="A detailed description of your car..."
@@ -771,44 +761,66 @@ const SellYourCar = () => {
               </div>
               </div>
             </div>
-            <div>
-              <h2 className="text-1xl font-base mb-4">Vehicle Photos</h2>
-              <p className="text-sm text-gray-500 mb-4">Add up to 10 high-quality photos of your car.</p>
-              <div className="flex flex-wrap gap-4">
-                <label className="cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-6 w-40 h-32 flex flex-col items-center justify-center hover:border-blue-500 transition-colors">
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                  <PhotoIcon className="h-8 w-8 text-gray-400" />
-                  <span className="mt-2 text-sm text-gray-500">Add Photos</span>
-                  <span className="text-xs text-gray-400 mt-1">({images.length}/10)</span>
-                </label>
-                {images.map((img, index) => (
-                  <div key={index} className="relative w-40 h-32 rounded-lg overflow-hidden group">
-                    <img
-                      src={img}
-                      alt={`Car photo ${index + 1}`}
-                      className="w-full h-full object-cover cursor-pointer"
-                      onClick={() => setFullScreenImage(img)}
+            <div
+                className="relative"
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const files = Array.from(e.dataTransfer.files);
+                  handleImageUpload({ target: { files } });
+                }}
+                onPaste={(e) => {
+                  const items = e.clipboardData.items;
+                  const files = [];
+                  for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.startsWith("image")) {
+                      files.push(items[i].getAsFile());
+                    }
+                  }
+                  if (files.length > 0) {
+                    handleImageUpload({ target: { files } });
+                  }
+                }}
+              >
+                <h2 className="text-1xl font-base mb-4">Vehicle Photos</h2>
+                <p className="text-sm text-gray-500 mb-4">Add up to 10 high-quality photos of your car.</p>
+
+                <div className="flex flex-wrap gap-4">
+                  <label className="cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-6 w-40 h-32 flex flex-col items-center justify-center hover:border-blue-500 transition-colors">
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
                     />
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeImage(index);
-                      }}
-                      className="absolute top-1 right-1 bg-black bg-opacity-60 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs hover:bg-opacity-80 transition-opacity"
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
+                    <PhotoIcon className="h-8 w-8 text-gray-400" />
+                    <span className="mt-2 text-sm text-gray-500">Add Photos</span>
+                  </label>
+
+                  {images.map((img, index) => (
+                    <div key={index} className="relative w-40 h-32 rounded-lg overflow-hidden group">
+                      <img
+                        src={img}
+                        alt={`Car photo ${index + 1}`}
+                        className="w-full h-full object-cover cursor-pointer"
+                        onClick={() => setFullScreenImage(img)}
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeImage(index);
+                        }}
+                        className="absolute top-1 right-1 bg-black bg-opacity-60 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs hover:bg-opacity-80 transition-opacity"
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+
             {fullScreenImage && (
               <div
               className="fixed top-0 left-0 w-full h-full bg-gray bg-opacity-70 flex justify-center items-center z-50 cursor-pointer"

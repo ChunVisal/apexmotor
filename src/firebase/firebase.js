@@ -1,7 +1,7 @@
 // firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyClk5sey1D1Qa1HTyE1PNygr_JDfL4ZToo",
@@ -16,6 +16,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
-export { app, db, auth };
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+function loginWithGoogle() {
+  if (isSafari) {
+    return signInWithRedirect(auth, provider);
+  }
+  return signInWithPopup(auth, provider);
+}
+
+export { app, db, auth, googleProvider, signInWithPopup, loginWithGoogle };
   

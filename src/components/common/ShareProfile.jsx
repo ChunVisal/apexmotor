@@ -1,52 +1,56 @@
-// src/components/common/ShareProfile.jsx
 import { FaShareAlt } from "react-icons/fa";
 import { Share2 } from "lucide-react";
 import Button from "../common/Button";
 
-// 🔥 Reusable share handler
+/* =====================
+   SHARE HELPERS
+===================== */
+
+// share profile
 const shareProfile = async (userId) => {
-  const profileUrl = `${window.location.origin}/profile/${userId}`;
+
+  const url = `${window.location.origin}/public-profile/${userId}`;
 
   try {
     if (navigator.share) {
       await navigator.share({
-        title: "Check out this profile!",
-        text: "Take a look at this profile on Car E-conomic 🚗🔥",
-        url: profileUrl,
+        title: "Check out this profile",
+        url,
       });
     } else {
-      await navigator.clipboard.writeText(profileUrl);
-      alert("✅ Link copied to clipboard!");
+      await navigator.clipboard.writeText(url);
+      alert("Profile link copied");
     }
-  } catch (error) {
-    console.error("Sharing failed:", error);
-    alert("❌ Could not share link.");
+  } catch (err) {
+    console.error(err);
   }
 };
 
-// 🔥 Reusable share handler
-export const shareCar = async (carId) => {
-  const carUrl = `${window.location.origin}/car/${carId}`;
+// share car
+const shareCar = async (userId, carId) => {
+
+  const url = `${window.location.origin}/cars/${userId}/${carId}`;
 
   try {
     if (navigator.share) {
       await navigator.share({
-        title: "Check out this car! 🚗🔥",
-        text: "Take a look at this amazing car on Car E-conomic",
-        url: carUrl,
+        title: "Check out this car",
+        url,
       });
     } else {
-      await navigator.clipboard.writeText(carUrl);
-      alert("✅ Car link copied to clipboard!");
+      await navigator.clipboard.writeText(url);
+      alert("Car link copied");
     }
-  } catch (error) {
-    console.error("Sharing failed:", error);
-    alert("❌ Could not share the link.");
+  } catch (err) {
+    console.error(err);
   }
 };
 
+/* =====================
+   COMPONENTS
+===================== */
 
-// 🔹 Button 1
+// Share my profile (button)
 export function ShareProfileButton({ userId }) {
   return (
     <Button
@@ -58,7 +62,7 @@ export function ShareProfileButton({ userId }) {
   );
 }
 
-// 🔹 Button 2
+// Share public profile (menu / link)
 export function ShareProfileLink({ userId }) {
   return (
     <button
@@ -70,27 +74,28 @@ export function ShareProfileLink({ userId }) {
   );
 }
 
-
-// 🔹 share button component
-export function ShareCarButton({ carId }) {
-
+// Share car card
+export function ShareCarButton({ userId, carId }) {
   return (
     <button
-      onClick={() => shareCar(carId)}
+      onClick={() => shareCar(userId, carId)}
       className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-gray-800 transition-colors duration-150 hover:bg-gray-50"
     >
-      <span className="text-gray-600"><Share2 size={20} /></span> <span>Share</span>
+      <span className="text-gray-600">
+        <Share2 size={20} />
+      </span>
+      <span>Share</span>
     </button>
   );
 }
 
-// 🔹 share button component
-export function ShareCarDetailButton({ carId }) {
-
+// Share car detail
+export function ShareCarDetailButton({ userId, carId }) {
   return (
-    <button
-      onClick={() => shareCar(carId)}>
-      <span className="text-gray-600"><Share2 size={20} /></span> 
+    <button onClick={() => shareCar(userId, carId)}>
+      <span className="text-gray-600">
+        <Share2 size={20} />
+      </span>
     </button>
   );
 }

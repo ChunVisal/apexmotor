@@ -1,7 +1,15 @@
 // src/pages/Notifications.jsx
 import { useEffect, useState } from "react";
 import { db } from "../../firebase/firebase";
-import { collection, onSnapshot, query, orderBy, doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
@@ -14,32 +22,80 @@ export default function Notifications() {
 
   useEffect(() => {
     if (!user) return;
+    let isMounted = true;
 
     const q = query(
       collection(db, "notifications", user.uid, "list"),
       orderBy("timestamp", "desc")
     );
 
-    const unsub = onSnapshot(q, (snap) => {
-      const notis = snap.docs.map((doc) => {
-        const data = doc.data();
-        // Ensure sender image exists
-        return {
-          id: doc.id,
-          senderPhotoURL: data.senderPhotoURL || "/placeholder-profile.png",
-          ...data,
-        };
-      });
+    const unsub = onSnapshot(q, async (snap) => {
+      try {
+        // Map docs -> array of promises (we may fetch user doc for image)
+        const notis = await Promise.all(
+          snap.docs.map(async (docSnap) => {
+            const data = docSnap.data();
+            // Debug: what's in the notification doc
+            console.log("Notification data:", data);
 
-      setNotifications(notis);
-      setUnreadCount(notis.filter((n) => !n.read).length);
+            // 1) If the doc already contains a full URL, use it
+            if (data.senderPhotoURL && typeof data.senderPhotoURL === "string" && data.senderPhotoURL.startsWith("http")) {
+              return { id: docSnap.id, senderPhotoURL: data.senderPhotoURL, ...data };
+            }
+
+            // 2) Otherwise try to fetch the sender's user doc
+            let photoFromUser = null;
+            if (data.senderId) {
+              try {
+                const userDocRef = doc(db, "users", data.senderId);
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                  const u = userDocSnap.data();
+                  // try common fields
+                  photoFromUser =
+                    u.profileImage ||
+                    u.photoURL ||
+                    u.avatar ||
+                    u.image ||
+                    u.imageURL ||
+                    null;
+                }
+              } catch (err) {
+                console.error("Failed to fetch sender user doc:", err);
+              }
+            }
+
+            // 3) final fallback
+            const finalPhoto =
+              photoFromUser && typeof photoFromUser === "string" && photoFromUser.startsWith("http")
+                ? photoFromUser
+                : "https://res.cloudinary.com/demo/image/upload/sample.jpg"; // <- change to your placeholder if you want
+
+            return { id: docSnap.id, senderPhotoURL: finalPhoto, ...data };
+          })
+        );
+
+        if (!isMounted) return;
+        setNotifications(notis);
+        setUnreadCount(notis.filter((n) => !n.read).length);
+        console.log("Resolved notifications with photos:", notis.map(n => n.senderPhotoURL));
+      } catch (err) {
+        console.error("Error processing notifications snapshot:", err);
+      }
     });
 
-    return () => unsub();
+    return () => {
+      isMounted = false;
+      unsub();
+    };
   }, [user]);
 
   const markAsRead = async (id) => {
-    await updateDoc(doc(db, "notifications", user.uid, "list", id), { read: true });
+    try {
+      await updateDoc(doc(db, "notifications", user.uid, "list", id), { read: true });
+    } catch (err) {
+      console.error("Error marking notification read:", err);
+    }
   };
 
   if (!user) return null;
@@ -69,14 +125,14 @@ export default function Notifications() {
               <Link to={`/public-profile/${n.senderId}`}>
                 <img
                   src={n.senderPhotoURL}
-                  alt={n.senderName}
+                  alt={n.senderName || "User"}
                   className="w-10 h-10 rounded-full object-cover border"
                 />
               </Link>
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-1">
                   <Link to={`/public-profile/${n.senderId}`} className="font-semibold text-gray-800 hover:underline">
-                    {n.senderName}
+                    {n.senderName || "Unknown"}
                   </Link>
                   <span className="text-xs text-gray-400">
                     {n.timestamp?.seconds ? new Date(n.timestamp.seconds * 1000).toLocaleString() : ""}
@@ -84,10 +140,7 @@ export default function Notifications() {
                 </div>
                 <p className="text-gray-700 text-sm">{n.message}</p>
                 {n.carId && (
-                  <Link
-                    to={`/cars/${n.userId}/${n.carId}`}
-                    className="text-blue-500 underline text-sm mt-1 inline-block"
-                  >
+                  <Link to={`/cars/${n.userId}/${n.carId}`} className="text-blue-500 underline text-sm mt-1 inline-block">
                     View Car
                   </Link>
                 )}

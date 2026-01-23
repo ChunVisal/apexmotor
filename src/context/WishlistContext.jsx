@@ -34,7 +34,14 @@ export function WishlistProvider({ children }) {
         senderId: user.uid,
         senderName: userData.username || user.email || "User",
         senderEmail: user.email || "N/A",
-        senderPhotoURL: userData.profileImage || "", 
+        senderPhotoURL:
+  userData.profileImage ||
+  userData.photoURL ||
+  userData.avatar ||
+  userData.image ||
+  userData.imageURL ||
+  "" // Fallback to empty string if no image
+  ,
         carId,
         userId: carOwnerId,
         message,

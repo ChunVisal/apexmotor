@@ -35,8 +35,6 @@ const refreshSoldCars = async () => {
         ...doc.data(),
       }));
 
-      // ✅ ADD THIS LINE TO DEBUG!
-      console.log(`Found ${cars.length} sold cars for user ${user.uid}:`, cars);
       
       setSoldCars(cars);
     } catch (err) {

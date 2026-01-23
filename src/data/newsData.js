@@ -1,22 +1,22 @@
 // This file is your news data, now using optimized images for better performance.
 
-// Import all images from the optimized directory
-import aventador from "../../public/optimized/1b38e525-aventador-assembly-line-600.jpeg";
-import negotiate from "../../public/optimized/360_f_412460677_fn5yuydyhg9vkdrgojno7sgtjnotj2dp-600.jpeg";
-import porscheInterior from "../../public/optimized/2025-porsche-911-carrera-992-04-interior-11182024_717-600.jpeg";
-import bmw7Series from "../../public/optimized/372995_bmw_7_series-1200.webp";
+// Import all images from the optimized directory (webp version)
+import aventador from "../../public/optimized/1b38e525-aventador-assembly-line-600.webp";
+import negotiate from "../../public/optimized/360_f_412460677_fn5yuydyhg9vkdrgojno7sgtjnotj2dp-600.webp";
+import porscheInterior from "../../public/optimized/2025-porsche-911-carrera-992-04-interior-11182024_717-600.webp";
+import bmw7Series from "../../public/optimized/372995_bmw_7_series-1200.webp"; // keep if exists
 import modernTech from "../../public/optimized/647161-v2-657092d5e812b-600.webp";
 import carPhotography from "../../public/optimized/1740016944044-600.webp";
-import carService from "../../public/optimized/front-view-car-service-employees-work_23-2148327559-600.jpeg";
-import audi from "../../public/optimized/grodno-belarus-december-2019-audi-600nw-2022386441-600.jpeg";
-import homberg from "../../public/optimized/hombergmotorsports_feature-576x255-600.jpeg";
-import porscheGarage from "../../public/optimized/how-20to-20give-20your-20garage-20a-20porsche-20makeover-600.jpeg";
-import urusInterior from "../../public/optimized/lamborghini_urus_se_interior-hd-600.jpeg";
-import lamboBigpic from "../../public/optimized/lamborghini-bigpic01-600.jpeg";
-import mercedesV12 from "../../public/optimized/mercedes-v12-600.jpeg";  
-import bmwM8 from "../../public/optimized/p90448611_highres_bmw-m8-competition-c-scaled-600.jpeg";
-import vinDiesel from "../../public/optimized/vin-diesel-dodge-demon-hero-600.jpeg";
-import lexus from "../../public/optimized/lexus-is-variant-module-hero-mobile-750x500-lex-fln-my25-0007-600.jpeg";
+import carService from "../../public/optimized/front-view-car-service-employees-work_23-2148327559-600.webp"; // converted
+import audi from "../../public/optimized/grodno-belarus-december-2019-audi-600nw-2022386441-600.webp";
+import homberg from "../../public/optimized/hombergmotorsports_feature-576x255-600.webp";
+import porscheGarage from "../../public/optimized/how-20to-20give-20your-20garage-20a-20porsche-20makeover-600.webp";
+import urusInterior from "../../public/optimized/lamborghini_urus_se_interior-hd-600.webp";
+import lamboBigpic from "../../public/optimized/lamborghini-bigpic01-600.webp"; // converted
+import mercedesV12 from "../../public/optimized/mercedes-v12-600.webp";  
+import bmwM8 from "../../public/optimized/p90448611_highres_bmw-m8-competition-c-scaled-600.webp";
+import vinDiesel from "../../public/optimized/vin-diesel-dodge-demon-hero-600.webp";
+import lexus from "../../public/optimized/lexus-is-variant-module-hero-mobile-750x500-lex-fln-my25-0007-600.webp";
 
 
 const newsData = [

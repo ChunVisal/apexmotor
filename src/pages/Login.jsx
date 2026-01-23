@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider, db } from "../firebase/firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export default function Login() {
   const { login } = useAuth();
@@ -21,13 +24,46 @@ export default function Login() {
 
     try {
       await login(email, password);
-      navigate("/confirm-profile");
+      navigate("/profile");
     } catch (err) {
       setError("Invalid email or password. Please try again.");
     } finally {
-      setLoading(falsfe);
+      setLoading(false);
     }
   };
+
+  const handleAuth = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+
+    // Check if user already exists in Firestore
+    const userRef = doc(db, "users", user.uid);
+    const existingUser = await getDoc(userRef);
+
+    if (!existingUser.exists()) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        username: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        verified: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }
+
+    // Redirect
+    navigate("/profile");
+  } catch (error) {
+    console.error("Google sign-in failed:", error);
+    setError("Google sign-in failed. Please try again.");
+  }
+};
+
+  const showComingSoonMessage = () => {
+    alert("This feature is coming soon!");
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -52,7 +88,7 @@ export default function Login() {
               <input
                 type="email"
                 placeholder="Email address"
-                className="w-full pl-10 pr-4 py-3 border bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                className="w-full pl-10 pr-4 py-3 borde bg-gray-400 text-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -66,7 +102,7 @@ export default function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                className="w-full pl-10 pr-12 py-3 border text-white bg-gray-300 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -127,12 +163,20 @@ export default function Login() {
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                <img className="h-5 w-5" src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google" />
-                <span className="ml-2">Google</span>
+              <button
+                onClick={handleAuth}
+                className="cursor-pointer w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+              >
+                <img
+                  className="h-5 w-5"
+                  src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png"
+                  alt="Google"
+                />
+                <span className="ml-2">Sign in with Google</span>
               </button>
 
-              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+              {/* this feature coming soon on click */}
+              <button onclick={showComingSoonMessage} className="cursor-pointer w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
                 <img className="h-5 w-5" src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook" />
                 <span className="ml-2">Facebook</span>
               </button>

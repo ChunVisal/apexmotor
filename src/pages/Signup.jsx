@@ -1,8 +1,8 @@
 // src/pages/Signup.jsx
 import { useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "../firebase/firebase";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { createUserWithEmailAndPassword, updateProfile, signInWithPopup } from "firebase/auth";
+import { auth, db, googleProvider } from "../firebase/firebase";
+import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import { FaUser, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 

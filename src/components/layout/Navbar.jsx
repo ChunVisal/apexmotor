@@ -12,26 +12,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { Home, ShoppingCart, Settings, User, LogOut, LogIn, Bookmark, Bell} from "lucide-react";
 
-import LogoProduct from "../../assets/logo/LogoProduct.png";
+import logo from "../../../public/logo.png";
 
 // Custom Message Box component for logout confirmation
 function MessageBox({ message, onConfirm, onCancel }) {
   if (!message) return null;
 
   return (
-    <div className="bg-opacity-50 flex items-center justify-center fixed inset-0 z-[2000]">
-      <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm text-center">
+    <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-opacity-50">
+      <div className="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm text-center animate-fadeIn">
         <p className="text-lg font-semibold text-gray-800 mb-4">{message}</p>
         <div className="flex gap-4 justify-center">
           <button
             onClick={onConfirm}
-            className="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition"
+            className="bg-red-600 text-white font-semibold text-sm py-2 px-4 rounded-sm hover:bg-red-700 transition"
           >
             Yes, Logout
           </button>
           <button
             onClick={onCancel}
-            className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+            className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-sm hover:bg-gray-300 transition"
           >
             Cancel
           </button>
@@ -40,6 +40,7 @@ function MessageBox({ message, onConfirm, onCancel }) {
     </div>
   );
 }
+
 
 // Logo component
 const Logo = () => {
@@ -58,10 +59,10 @@ const Logo = () => {
 
   return (
     <img
-      src={LogoProduct}
-      className="w-15 cursor-pointer"
+      src={logo}
+      className="w-10 cursor-pointer"
       onClick={handleLogoClick}
-      alt="LogoProduction"
+      alt="logoion"
     />
   );
 };
@@ -91,6 +92,12 @@ export default function Navbar() {
   };
   const handleCancel = () => setConfirmLogout(false);
 
+  function handleProtectRoute(_path) {
+    if (!user) {
+      alert("🛑 Please login to access this page!");
+    }
+  }
+
   const renderUserSection = () => {
     if (loading) {
       return (
@@ -113,8 +120,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/30 backdrop-blur-md text-gray-900 bg-opacity-10 shadow-lg border-b border-white/20 px-4 py-1.5" style={{ fontFamily: "'Arimo', sans-serif" }}>
-      
+    <><nav className="sticky top-0 z-50 bg-white/30 backdrop-blur-md text-gray-900 bg-opacity-10 shadow-lg border-b border-white/20 px-4 py-1.5" style={{ fontFamily: "'Arimo', sans-serif" }}>
+
       {/* Mobile Search */}
       {showMobileSearch && (
         <div className="md:hidden mb-2 animate-slideDown">
@@ -129,12 +136,12 @@ export default function Navbar() {
           <Link to="/cars" className="text-base font-medium text-gray-800 hover:text-gray-900">
             Inventory
           </Link>
-          <Link to="/notification" className="">
+          <Link to={"/notification"} onClick={() => handleProtectRoute("/notification")} className="">
             <Bell />
           </Link>
-          <Link
-            to="/Sellcar"
-            className="sm:w-32 gap-2 sm:h-8 flex justify-center items-center rounded-md overflow-hidden btn-Bg hover:ring-2 ring-gray-500 transition"
+          <Link to={"/Sellcar"}
+            onClick={() => handleProtectRoute("/Sellcar")}
+            className="sm:w-35 gap-2 sm:h-8 flex justify-center items-center rounded-md overflow-hidden btn-Bg hover:ring-2 ring-gray-500 transition"
           >
             <FontAwesomeIcon size="lg" color="white" icon={faCamera} />
             <h3 className="text-0xl font-semibold text-gray-100 whitespace-nowrap">Sell</h3>
@@ -157,15 +164,16 @@ export default function Navbar() {
           {renderUserSection()}
 
           <Link
-            to="/Sellcar"
-            className="sm:w-25 gap-2 sm:h-9 h-8 w-17 flex justify-center items-center rounded-md overflow-hidden btn-Bg hover:ring-2 ring-gray-500 transition"
+            to={"/Sellcar"}
+            onClick={() => handleProtectRoute("/Sellcar")}
+            className="h-8 w-17 flex justify-center gap-1 items-center rounded-md overflow-hidden btn-Bg hover:ring-2 ring-gray-500 transition"
           >
-            <FontAwesomeIcon size="lg" color="white" icon={faCamera} />
-            
-            <h3 className="text-0xl font-semibold text-gray-100 whitespace-nowrap">Sell</h3>
+            <FontAwesomeIcon size="md" color="white" icon={faCamera} />
+
+            <h3 className="text-0xl font-medium text-gray-100 whitespace-nowrap">Sell</h3>
           </Link>
-          
-          <Link to="/notification" className="">
+
+          <Link to={"/notification"} onClick={() => handleProtectRoute("/notification")} className="">
             <Bell />
           </Link>
           <button onClick={toggleMenu} aria-label="Toggle menu" className="text-2xl p-1">&#9776;</button>
@@ -203,12 +211,13 @@ export default function Navbar() {
                   Profile
                 </Link>
                 <button
-                  onClick={() => { handleLogout(); setIsMenuOpen(false); }}
-                  className="flex items-center py-1.5 px-2 border-t border-gray-200 text-left text-red-600 hover:text-red-800 hover:bg-white/10 transition-colors gap-2"
+                  onClick={() => { handleLogout(); setIsMenuOpen(false); } }
+                  className="flex items-center justify-center py-1 px-2 border-t border-gray-200 text-red-600 hover:text-red-800 hover:bg-white/10 transition-colors gap-1 rounded-sm text-sm mx-auto"
                 >
-                  <LogOut className="w-4 h-4 m-1" />
-                  Logout
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Logout</span>
                 </button>
+
               </>
             ) : (
               <Link
@@ -224,12 +233,9 @@ export default function Navbar() {
         </DropdownMenu>
       </div>
 
-      {/* Logout confirmation box */}
-      <MessageBox
+    </nav><MessageBox
         message={confirmLogout ? "Are you sure you want to log out?" : null}
         onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
-    </nav>
+        onCancel={handleCancel} /></>
   );
 }

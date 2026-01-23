@@ -26,7 +26,7 @@ export default function ContactUs() {
           <Phone size={18} className="text-gray-700" />
           <div>
             <h2 className="text-xs font-semibold">Phone</h2>
-            <p className="text-xs text-gray-700">+855 987 654 321</p>
+            <p className="text-xs text-gray-700">+885 888 093 342</p>
           </div>
         </div>
 

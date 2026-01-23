@@ -7,12 +7,21 @@ import CardMenu from "../common/CardMenu";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { Helmet } from "react-helmet-async";
+
 
 const formatTimeAgo = (date) => {
   if (!date) return "N/A";
   const d = date instanceof Date ? date : new Date(date.seconds ? date.seconds * 1000 : date);
   return formatDistanceToNow(d, { addSuffix: true });
 };
+
+export function getOptimizedImage(url, width = 600, height = 400) {
+  if (!url?.includes("cloudinary.com")) return url || "/placeholder.png";
+  // Append Cloudinary automatic optimization
+  return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width},h_${height},c_fill/`);
+}
+
 
 export default function CarCard({ car }) {
   const { user } = useAuth();
@@ -21,7 +30,7 @@ export default function CarCard({ car }) {
 
   const isInWishlist = wishlistItems.some(
     (item) => item.id === car.id && item.userId === car.userId
-  );
+  );  
 
   const handleToggleWishlist = () => {
     if (!user) {
@@ -29,6 +38,7 @@ export default function CarCard({ car }) {
       return;
     }
     toggleWishlist(car);
+    alert(isInWishlist ? "❌ Removed from wishlist." : "✅ Added to wishlist.");
   };
 
   useEffect(() => {
@@ -52,23 +62,41 @@ export default function CarCard({ car }) {
 
 
   return (
-    // IMPORTANT: add h-full so the card fills the grid cell
+    <>
+     <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: `${car.name} ${car.model}`,
+            image: car.images,
+            description: car.features?.join(", ") || "High quality car for sale",
+            brand: { "@type": "Brand", name: car.name },
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "USD",
+              price: car.price || 0,
+              availability: "https://schema.org/InStock",
+              url: `https://apexmotor.shop/cars/${car.userId}/${car.id}`,
+            },
+          })}
+        </script>
+      </Helmet>
     <div className="h-full bg-white rounded-none rounded-t-[3px] border border-gray-300 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
       <div className="relative flex-shrink-0">
         <Link to={`/cars/${car.userId}/${car.id}`} onClick={saveNow}>
-          {/* Use a fixed aspect ratio so images crop consistently */}
           <div className="w-full sm:h-48 h-40 overflow-hidden bg-gray-100">
             <img
-            width={600} 
-                      height={400} 
-                      loading="lazy"
-              src={car.images?.[0] || "/placeholder.png"}
-              alt={`${car.name} ${car.model}`}
+              width={600} 
+              height={400} 
+              loading="lazy"
+              src={getOptimizedImage(car.images?.[0], 600, 400)}
+              alt={`${car.name || "Car"} ${car.model || ""} - ${car.features?.slice(0,3).join(", ") || "Car for sale"}`}
               className="w-full h-full object-cover object-center"
             />
           </div>
         </Link>
-    
+
       {car.delivery && (
           <div className="whitespace-nowrap absolute top-2 left-2 bg-black/70 text-white text-base text-[9px] sm:text-[10px] px-1.5 py-[2px] sm:px-2 sm:py-[3px] rounded-md">
             <span>Free Delivery</span>
@@ -99,9 +127,9 @@ export default function CarCard({ car }) {
       {/* Content area should grow to fill remaining vertical space */}
       <div className="p-3 pt-3 flex flex-col flex-grow min-h-0">
         <div className="flex-grow flex flex-col min-h-0">
-          <p className="text-sm text-gray-900 truncate">
+          <h2 className="text-sm text-gray-900 ">
             {car.name || "Unnamed"} {car.model || ""}
-          </p>
+          </h2>
 
           <p className="text-xs text-red-600 truncate">
             {car.price ? `$${car.price.toLocaleString()}` : "Price not listed"}
@@ -111,7 +139,7 @@ export default function CarCard({ car }) {
             <span className="bg-gray-200 px-2 py-[1px] rounded-md">{car.year}</span>
             <span className="bg-gray-200 px-2 py-[1px] rounded-md">{car.plate ? "With Plate" : "No Plate"}</span>
             <span className="bg-gray-200 px-2 py-[1px] rounded-md">{car.condition}</span>
-            <span className="bg-gray-200 px-2 py-[1px] rounded-md">
+            <span className="bg-gray-200 px-2 py-[1px] rounded-md text-wrap">
               {car.locationName ? car.locationName.split(", ").slice(0, 2).join(", ") : "No Location"}
             </span>
           </div>
@@ -134,5 +162,6 @@ export default function CarCard({ car }) {
         </div>
       </div>
     </div>
+    </>
   );
 }

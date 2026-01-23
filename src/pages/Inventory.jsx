@@ -7,6 +7,8 @@ import Breadcrumb from "../components/layout/Breadcrumb";
 import { useEffect, useState, useRef } from "react";
 // import SmartScroll from '../utils/SmartScroll';
 
+import { Helmet } from "react-helmet-async";
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -36,18 +38,37 @@ export default function Inventory() {
   };
 
   return (
+    <><Helmet>
+      <title>All Cars for Sale | ApexMotor Inventory</title>
+
+      <meta
+        name="description"
+        content="Browse all cars available on ApexMotor. Filter by brand, type, price, year, and condition to find the perfect ride." />
+
+      <meta
+        name="keywords"
+        content="cars inventory, cambodia cars, car marketplace, apexmotor cars, buy cars online" />
+
+      <meta property="og:title" content="ApexMotor Inventory" />
+      <meta property="og:description" content="Explore all cars for sale in Cambodia. Accurate listings with images, price & details." />
+      <meta property="og:image" content="https://apexmotor.shop/logo.png" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://apexmotor.shop/cars" />
+
+      <link rel="canonical" href="https://apexmotor.shop/cars" />
+    </Helmet>
+    
     <div className="mt-10" ref={scrollContainerRef}>
-      <div className="mx-7 sm:mx-12">
-        <Breadcrumb />
-      </div>
-      <Category 
-        showTypes={false} 
-        filters={appliedFilters} 
-        setFilters={setFilters} 
-        sortOption={sortOption} 
-        setSortOption={setSortOption} 
-      />
-      <CarList filters={appliedFilters} onDataLoaded={() => setIsReady(true)} sortOption={sortOption} isHomePage={false} />
-    </div>
+        <div className="mx-7 sm:mx-12">
+          <Breadcrumb />
+        </div>
+        <Category
+          showTypes={false}
+          filters={appliedFilters}
+          setFilters={setFilters}
+          sortOption={sortOption}
+          setSortOption={setSortOption} />
+        <CarList filters={appliedFilters} onDataLoaded={() => setIsReady(true)} sortOption={sortOption} isHomePage={false} />
+      </div></>
   );
 }

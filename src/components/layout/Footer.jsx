@@ -4,19 +4,22 @@ import {
   FaFileContract, FaQuestionCircle, FaCar, FaStore, FaComment,
   FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube, FaAddressBook
 } from 'react-icons/fa';
-// import Logo from "../../assets/LogoProduct.png"
+
 import { Link } from 'react-router-dom';
 import { RatingSummary } from "../common/Ratings";
-import LogoProduct from "../../assets/logo/Logo.png";
+import LogoProduct from "../../../public/logo.png";
+import { useAuth } from  "../../context/AuthContext"
 
 export default function Footer() {
+  const { user } = useAuth();
+
   return (
     <footer className="bg-gray-900 text-gray-300 text-sm">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           
-          <div className="col-span-2 md:col-span-1">
-            <img src={LogoProduct} className='w-15' alt="" />
+          <div className="">
+            <img src={LogoProduct} className='w-14' alt="" />
             <p className="my-4 text-[12.5px]">
               Connecting car enthusiasts with trusted sellers. Your safe marketplace for buying and selling vehicles each other.
             </p>
@@ -26,10 +29,12 @@ export default function Footer() {
           <div className='text-[12.5px]'>
             <h4 className="text-white font-semibold text-sm mb-4">Transactions</h4>
             <ul className="space-y-2">
-              <Link to={"/sellcar"} className="flex items-center hover:text-white transition">
-                <FaCar className="mr-2 text-blue-400 text-xs" />
-                Sell Your Car
-              </Link>
+              {user &&
+                  <Link to={"/sellcar"} className="flex items-center hover:text-white transition">
+                  <FaCar className="mr-2 text-blue-400 text-xs" />
+                  Sell Your Car
+                </Link>
+              }
               <Link to={"/cars"} className="flex items-center hover:text-white transition">
                 <FaStore className="mr-2 text-blue-400 text-xs" />
                 Find Cars
@@ -76,7 +81,7 @@ export default function Footer() {
               </a>
               <a href="tel:+8851234567890" className="flex items-center hover:text-white">
                 <FaPhone className="mr-2 text-blue-400 text-xs" />
-                <span>+885 123 456 7890</span>
+                <span>+885 888 093 342</span>
               </a>
             </div>
 
@@ -139,7 +144,7 @@ export default function Footer() {
           </div>
           
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
-            <span>Since 2025 ApexMotor Marketplace</span>
+            <span>@ 2025 ApexMotor Marketplace</span>
             <Link to="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
             <Link to="/terms-of-use" className="hover:text-white">Terms of Use</Link>
             <Link to="/cookie-policy" className="hover:text-white">Cookie Policy</Link>
