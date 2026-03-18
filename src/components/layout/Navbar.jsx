@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { Home, ShoppingCart, Settings, User, LogOut, LogIn, Bookmark, Bell} from "lucide-react";
 
-import logo from "../../../public/logo.png";
+import logo from "../../logo.png";
 
 // Custom Message Box component for logout confirmation
 function MessageBox({ message, onConfirm, onCancel }) {

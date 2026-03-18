@@ -7,7 +7,7 @@ import {
 
 import { Link } from 'react-router-dom';
 import { RatingSummary } from "../common/Ratings";
-import LogoProduct from "../../../public/logo.png";
+import LogoProduct from "../../logo.png";
 import { useAuth } from  "../../context/AuthContext"
 
 export default function Footer() {

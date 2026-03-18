@@ -132,14 +132,12 @@ export default function PublicProfile() {
     // Adjusted container margin for better mobile spacing
     <div className="mx-2 sm:mx-10 min-h-screen text-gray-800 bg-gray-50 font-sans">
       <Breadcrumb />
-      <div
-        className="relative h-48 sm:h-75 bg-gray-200"
-        onClick={() => {
-          setPreviewType("bg");
-          setPreviewOpen(true);
-        }}
-      >
+      <div className="relative h-48 sm:h-75 bg-gray-200">
         <img
+          onClick={() => {
+            setPreviewType("bg");
+            setPreviewOpen(true);
+          }}
           src={
             profile.backgroundImage ||
             "https://via.placeholder.com/1200x400?text=User+Profile"

@@ -35,8 +35,6 @@ export default function Notifications() {
         const notis = await Promise.all(
           snap.docs.map(async (docSnap) => {
             const data = docSnap.data();
-            // Debug: what's in the notification doc
-            console.log("Notification data:", data);
 
             // 1) If the doc already contains a full URL, use it
             if (data.senderPhotoURL && typeof data.senderPhotoURL === "string" && data.senderPhotoURL.startsWith("http")) {
@@ -78,7 +76,6 @@ export default function Notifications() {
         if (!isMounted) return;
         setNotifications(notis);
         setUnreadCount(notis.filter((n) => !n.read).length);
-        console.log("Resolved notifications with photos:", notis.map(n => n.senderPhotoURL));
       } catch (err) {
         console.error("Error processing notifications snapshot:", err);
       }
