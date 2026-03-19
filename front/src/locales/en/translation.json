@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "login": "Login",
+    "inventory": "Inventory",
+    "sell_car": "Sell",
+    "home": "Home",
+    "save_order": "Save Order",
+    "inventory_mobile": "Inventory",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "message_box": {
+    "logout_confirm": "Are you sure you want to log out?",
+    "yes_logout": "Yes, Logout",
+    "cancel": "Cancel"
+  }
+}
