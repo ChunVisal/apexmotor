@@ -35,9 +35,12 @@ _Hosted on Netlify with continuous deployment from GitHub._
 
 ### 📸 Screenshots
 
-![Homepage](./assets/screenshots/home.png)  
-![Car Detail](./assets/screenshots/cardetail.png)  
-![User Dashboard](./assets/screenshots/dashboard.png)  
+![Homepage](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ab508964-a66f-484a-889b-68ab889ba326" />
+)  
+![Car Detail](<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/e0014701-5fea-4ea8-ae32-84607b5e2ae1" />
+)  
+![User Dashboard](<img width="1888" height="898" alt="image" src="https://github.com/user-attachments/assets/d9bc32a2-fa18-483a-afbc-6bef7eea877e" />
+)  
 
 ---
 
@@ -68,7 +71,7 @@ _Hosted on Netlify with continuous deployment from GitHub._
 ### 📂 Project Structure
 
 ```bash
-apexmotor/
+Apexmotor/
 ├── public/                # Static assets
 ├── src/
 │   ├── components/        # UI components (CarCard, Navbar)
