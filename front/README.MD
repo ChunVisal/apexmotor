@@ -68,7 +68,7 @@ _Hosted on Netlify with continuous deployment from GitHub._
 ### 📂 Project Structure
 
 ```bash
-apexmotor/
+Apexmotor/
 ├── public/                # Static assets
 ├── src/
 │   ├── components/        # UI components (CarCard, Navbar)

@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    match /{document=**} {
+      allow read, write: if true; // ⚠️ only for dev
+    }
+    
+    match /carsUser/{carId} {
+      allow read: if true;  // public can view cars
+      allow write: if request.auth != null; // only logged-in users can add
+    }
+    
+		match /carts/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    match /wishlist/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    match /cars/{brand} {
+      allow read: if true; // ✅ Anyone can read brand documents
+      allow write: if request.auth != null;
+
+      match /children/{car} {
+        allow read: if true; // ✅ Allow public read access for nested car listings
+        allow write: if request.auth != null; // 🔒 Only logged-in users can write
+      }
+    }
+
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null; // Keep this private
+    }
+  }
+}

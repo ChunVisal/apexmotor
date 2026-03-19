@@ -1,0 +1,152 @@
+/* src/index.css */
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'IBM Plex Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #F9FAFB;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;   /* center it */
+  width: 100%;
+}
+
+@layer utilities {
+
+  /* black background Opacity 50% */
+  .bg-black-50 {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  @keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.5s ease-out;
+  }
+    .custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #d0d0d0;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #666d75;
+    border-radius: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #4d5560;
+  }
+
+  /* hide scrollbar */
+  .hide-scrollbar::-webkit-scrollbar {
+     display: none;
+     height: 0;
+     width: 0;        
+  }
+
+  .btn-Bg {
+    background-color: #2384C1;
+  }
+  
+  .textblue {
+    color: #2384C1;
+  }
+  
+  .py-0 {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  
+  .white-blue {
+    color: rgba(243, 245, 252, 0.9);
+  }
+  
+  .word-spacing-lg {
+    word-spacing: 10px;
+  }
+  
+  .text-0xl {
+    font-size: 15px;
+  }
+  
+  .texts {
+    font-size: 12px;
+  }
+  
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  
+  h2, h3, h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+  }
+  
+  h5 {
+    letter-spacing: 0.1em;
+  }
+
+  p {
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  
+  span {
+    font-family: 'Quicksand', sans-serif;
+  }
+  
+  .btn {
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  .bg-card {
+    background: linear-gradient(to bottom, #6eb4e0 0%, rgba(110, 180, 224, 0.4) 10%, transparent 100%);
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.3s ease-out forwards;
+  }
+}

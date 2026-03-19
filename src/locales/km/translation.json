@@ -1,0 +1,19 @@
+
+{
+  "navbar": {
+    "login": "ចូលគណនី",
+    "inventory": "ឃ្លាំងស្តុក",
+    "sell_car": "លក់",
+    "home": "ទំព័រដើម",
+    "save_order": "រក្សាទុកការបញ្ជាទិញ",
+    "inventory_mobile": "ឃ្លាំងស្តុក",
+    "settings": "ការកំណត់",
+    "profile": "ប្រវត្តិរូប",
+    "logout": "ចាកចេញពីគណនី"
+  },
+  "message_box": {
+    "logout_confirm": "តើអ្នកពិតជាចង់ចាកចេញមែនទេ?",
+    "yes_logout": "បាទ/ចាស, ចាកចេញ",
+    "cancel": "បោះបង់"
+  }
+}
