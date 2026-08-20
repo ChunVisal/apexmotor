@@ -14,7 +14,7 @@ A full-stack car e-commerce platform built for the Cambodian market, allowing us
 
 ### 🌐 Live Demo & Deployment
 
-- **Live Site GitHub:** [https://joenarthan.github.io/apexmotor/](https://joenarthan.github.io/apexmotor/)  
+- **Live Site GitHub:** [https://chunvisal.github.io/apexmotor/](https://chunvisal.github.io/apexmotor/)  
 - **Live Site Netlify:** [https://apexmotor.netlify.app](https://apexmotor.netlify.app)  
 - **Custom Domain:** [https://www.apexmotor.shop](https://www.apexmotor.shop)  
 
