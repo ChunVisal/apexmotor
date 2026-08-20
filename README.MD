@@ -24,7 +24,7 @@ _Hosted on Netlify with continuous deployment from GitHub._
 
 ### ✨ Key Features
 
-- **Authentication:** Secure user sign-up, login, and session management.  
+- **Authentication:** Secure user sign-up, login with Google Auth and session management.  
 - **Peer-to-Peer Marketplace:** Users can effortlessly list their own cars for sale, browse listings from other users, and manage their inventory from a personal dashboard.
 - **Dynamic Search & Filtering:** Advanced filters (price, year, location, etc.) for easy browsing.  
 - **Real-time Interactions:** Instant notifications when cars are wishlisted.  
