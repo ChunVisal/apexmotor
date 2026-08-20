@@ -4,6 +4,7 @@
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=firebase)
 ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
+![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
 
 ## Modern Car Marketplace for Tech-Savvy Buyers
 
@@ -30,17 +31,6 @@ _Hosted on Netlify with continuous deployment from GitHub._
 - **User Dashboard:** Manage personal car listings (add, edit, delete).  
 - **Image Management:** Upload & optimize images with Cloudinary.  
 - **Responsive & SEO-Ready:** Works on all devices with meta tags + structured data for discoverability.  
-
----
-
-### 📸 Screenshots
-
-![Homepage](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ab508964-a66f-484a-889b-68ab889ba326" />
-)  
-![Car Detail](<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/e0014701-5fea-4ea8-ae32-84607b5e2ae1" />
-)  
-![User Dashboard](<img width="1888" height="898" alt="image" src="https://github.com/user-attachments/assets/d9bc32a2-fa18-483a-afbc-6bef7eea877e" />
-)  
 
 ---
 
