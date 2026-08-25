@@ -5,6 +5,7 @@
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=firebase)
 ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-3448C5?style=for-the-badge&logo=Figma&logoColor=white)
 
 ## Modern Car Marketplace for Tech-Savvy Buyers
 
