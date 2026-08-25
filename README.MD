@@ -33,32 +33,6 @@ _Hosted on Netlify with continuous deployment from GitHub._
 - **Image Management:** Upload & optimize images with Cloudinary.  
 - **Responsive & SEO-Ready:** Works on all devices with meta tags + structured data for discoverability.  
 
----
-
-### 🛠️ Tech Stack
-
-**Frontend:**  
-
-- React (Vite)  
-- TailwindCSS  
-
-**Backend:**  
-
-- Firebase (Firestore, Authentication)  
-- Node.js / Express (if API endpoints required)  
-
-**State Management:**  
-
-- React Hooks & Context API  
-
-**Other Tools:**  
-
-- React Router  
-- React Icons / Heroicons  
-- Cloudinary (media storage & optimization)  
-
----
-
 ### 📂 Project Structure
 
 ```bash
